@@ -150,7 +150,12 @@ public:
     }
 
 #endif
-    
+
+    void reset() {
+        integral = 0.0f;
+        prevInput = 0.0f;
+    }
+
 #ifdef ESP_PLATFORM
 
     datatype constrain(datatype x, int a, int b) {
