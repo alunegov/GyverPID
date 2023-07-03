@@ -33,7 +33,14 @@
 
 #ifndef GyverPID_h
 #define GyverPID_h
+
+#ifndef ESP_PLATFORM
 #include <Arduino.h>
+#endif
+
+#ifdef ESP_PLATFORM
+using boolean = bool;
+#endif
 
 #if defined(PID_INTEGER)	// расчёты с целыми числами
 typedef int datatype;
@@ -124,6 +131,8 @@ public:
         return output;
     }
     
+#ifndef ESP_PLATFORM
+
     // возвращает новое значение не ранее, чем через dt миллисекунд (встроенный таймер с периодом dt)
     datatype getResultTimer() {
         if (millis() - pidTimer >= _dt) {
@@ -139,7 +148,24 @@ public:
         pidTimer = millis();
         return getResult();
     }
+
+#endif
     
+#ifdef ESP_PLATFORM
+
+    datatype constrain(datatype x, int a, int b) {
+        if(x < a) {
+            return a;
+        }
+        else if(b < x) {
+            return b;
+        }
+        else
+            return x;
+    }
+
+#endif
+
 private:
     int16_t _dt = 100;		// время итерации в мс
     float _dt_s = 0.1;		// время итерации в с
@@ -152,4 +178,5 @@ private:
     int t = 0;	
 #endif
 };
+
 #endif
