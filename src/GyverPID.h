@@ -174,7 +174,7 @@ public:
 private:
     int16_t _dt = 100;		// время итерации в мс
     float _dt_s = 0.1;		// время итерации в с
-    boolean _mode = 0, _direction = 0;
+    boolean _mode = ON_ERROR, _direction = NORMAL;
     int _minOut = 0, _maxOut = 255;	
     datatype prevInput = 0;	
     uint32_t pidTimer = 0;
