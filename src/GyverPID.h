@@ -34,11 +34,17 @@
 #ifndef GyverPID_h
 #define GyverPID_h
 
-#ifndef ESP_PLATFORM
+#if defined __has_include
+#  if __has_include (<Arduino.h>)
+#    define IS_ARDUINO
+#  endif
+#endif
+
+#ifdef IS_ARDUINO
 #include <Arduino.h>
 #endif
 
-#ifdef ESP_PLATFORM
+#ifndef IS_ARDUINO
 using boolean = bool;
 #endif
 
@@ -131,7 +137,7 @@ public:
         return output;
     }
     
-#ifndef ESP_PLATFORM
+#ifdef IS_ARDUINO
 
     // возвращает новое значение не ранее, чем через dt миллисекунд (встроенный таймер с периодом dt)
     datatype getResultTimer() {
@@ -156,7 +162,7 @@ public:
         prevInput = 0.0f;
     }
 
-#ifdef ESP_PLATFORM
+#ifndef IS_ARDUINO
 
     datatype constrain(datatype x, int a, int b) {
         if(x < a) {
